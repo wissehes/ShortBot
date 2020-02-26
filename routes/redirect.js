@@ -15,11 +15,7 @@ router.get('/:code', async (req, res) => {
           res.redirect('/discord/login');
         } else {
           if(req.session.user.id === url.userId) {
-            //res.redirect(301, url.longUrl)
-            res.render('noperms', {
-              urlCode: url.urlCode,
-              user: req.session.user
-            })  
+            res.redirect(301, url.longUrl)
           } else {
             res.render('noperms', {
               urlCode: url.urlCode,

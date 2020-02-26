@@ -12,7 +12,7 @@ module.exports = (client, message) => {
     const command = args.shift().toLowerCase();
 
     if(validUrl.isUri(command)) {
-        saveLink(message.author, command, true)
+        saveLink(message.author, command)
             .then(data => {
                 const embed = new RichEmbed()
                 .setTitle("New short link created!")
