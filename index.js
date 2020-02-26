@@ -34,7 +34,8 @@ fs.readdir("./events/", (err, files) => {
     });
   });
 
-  app.use('/s/', require('./routes/index'));
+  app.use('/s/', require('./routes/redirect'));
+  app.use('/', require('./routes/index'))
 
   app.listen(config.port, () => {
       console.log("App running!")
