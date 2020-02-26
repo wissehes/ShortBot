@@ -1,0 +1,15 @@
+{
+  "name": "ShortBot",
+  "version": "1.0.0",
+  "description": "ShortBot is a discord bot for shortening links!",
+  "main": "index.js",
+  "author": "TheChicken14",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^11.5.1",
+    "express": "^4.17.1",
+    "mongoose": "^5.9.2",
+    "shortid": "^2.2.15",
+    "valid-url": "^1.0.9"
+  }
+}
