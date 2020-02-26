@@ -10,7 +10,7 @@ exports.run = (client, message, args) => {
         const embed = new RichEmbed()
         .setTitle("New short link created!")
         .setColor("GREEN")
-        .setDescription(`**Long link**: ${data.longUrl}\n**Short link** ${data.shortUrl}`)
+        .setDescription(`**Short link** ${data.shortUrl}`)
         message.channel.send(embed)
     })
 }
