@@ -12,6 +12,11 @@ client.config = config;
 
 connectDB();
 
+client.on("ready", () => {
+  console.log("Bot Ready!")
+  client.user.setActivity("url's", { type: 'WATCHING'})
+})
+
 fs.readdir("./events/", (err, files) => {
     if (err) return console.error(err);
     files.forEach(file => {
