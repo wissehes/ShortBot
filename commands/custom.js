@@ -13,4 +13,14 @@ exports.run = (client, message, args) => {
         .setDescription(`**Short link** ${data.shortUrl}`)
         message.channel.send(embed)
     })
+    .catch(err => {
+        if(err == "Url already exists") {
+            const embed = new RichEmbed()
+            .setColor("RED")
+            .setTitle("That URL already exists!")
+            .setDescription("Try again with a different name!")
+
+            message.channel.send(embed)
+        }
+    })
 }

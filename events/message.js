@@ -6,19 +6,21 @@ module.exports = (client, message) => {
 
     if (message.author.bot) return;
 
-    if (message.content.indexOf(client.config.prefix) !== 0) return;
+    if (message.content.toLowerCase().indexOf(client.config.prefix) !== 0) return;
 
     const args = message.content.slice(client.config.prefix.length).trim().split(/ +/g);
     const command = args.shift().toLowerCase();
 
     if(validUrl.isUri(command)) {
-        saveLink(message.author, command)
+        saveLink(message.author, command, true)
             .then(data => {
                 const embed = new RichEmbed()
                 .setTitle("New short link created!")
                 .setColor("GREEN")
                 .setDescription(`**Short link** ${data.shortUrl}`)
                 message.channel.send(embed)
+            }).catch(err => {
+                console.log(err)
             })
     }
 

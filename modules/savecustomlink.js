@@ -6,10 +6,9 @@ const Url = require('../models/Url');
 module.exports = (user, longUrl, urlCode) => {
     return new Promise(async (resolve, reject) => {
         const { baseUrl } = require('../config')
-        
         if (validUrl.isUri(longUrl)) {
             try {
-                let url = await Url.findOne({ shortUrl: urlCode });
+                let url = await Url.findOne({ urlCode });
 
                 if (url) {
                     reject('Url already exists')
@@ -23,7 +22,8 @@ module.exports = (user, longUrl, urlCode) => {
                         longUrl,
                         shortUrl,
                         urlCode,
-                        date: new Date()
+                        date: new Date(),
+                        secret: false
                     });
 
                     await url.save();
@@ -32,7 +32,7 @@ module.exports = (user, longUrl, urlCode) => {
                 }
             } catch (err) {
                 console.error(err);
-                reject('Rrror');
+                reject('Error');
             }
         } else {
             reject('Invalid long url');

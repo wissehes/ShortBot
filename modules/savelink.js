@@ -3,7 +3,7 @@ const shortid = require('shortid');
 
 const Url = require('../models/Url');
 
-module.exports = (user, longUrl) => {
+module.exports = (user, longUrl, secret = false) => {
     return new Promise(async (resolve, reject) => {
         const { baseUrl } = require('../config')
         const urlCode = shortid.generate();
@@ -24,7 +24,8 @@ module.exports = (user, longUrl) => {
                         longUrl,
                         shortUrl,
                         urlCode,
-                        date: new Date()
+                        date: new Date(),
+                        secret: secret ? true : false
                     });
 
                     await url.save();
@@ -33,7 +34,7 @@ module.exports = (user, longUrl) => {
                 }
             } catch (err) {
                 console.error(err);
-                reject('Rrror');
+                reject('error');
             }
         } else {
             reject('Invalid long url');

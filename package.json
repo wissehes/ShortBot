@@ -6,9 +6,14 @@
   "author": "TheChicken14",
   "license": "MIT",
   "dependencies": {
+    "btoa": "^1.2.1",
     "discord.js": "^11.5.1",
+    "ejs": "^3.0.1",
     "express": "^4.17.1",
+    "express-session": "^1.17.0",
+    "form-data": "^3.0.0",
     "mongoose": "^5.9.2",
+    "node-fetch": "^2.6.0",
     "shortid": "^2.2.15",
     "valid-url": "^1.0.9"
   }
