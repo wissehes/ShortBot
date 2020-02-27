@@ -37,6 +37,13 @@ fs.readdir("./commands/", (err, files) => {
     let commandName = file.split(".")[0];
     console.log(`Attempting to load command ${commandName}`);
     client.commands.set(commandName, props);
+    if(props.info) {
+      if(props.info.aliases){
+        for(var i = 0; i < props.info.aliases.length; i++){
+          client.commands.set(props.info.aliases[i], props)
+        }
+      }
+    }
   });
 });
 

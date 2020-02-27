@@ -16,3 +16,10 @@ exports.run = async (client, message, args) => {
 
     message.channel.send(embed)
 }
+
+exports.info = {
+    name: `my`,
+    aliases: ['links'],
+    description: `Shows your short URL's`,
+    usage: `my`
+}
