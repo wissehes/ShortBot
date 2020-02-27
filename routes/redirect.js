@@ -12,7 +12,11 @@ router.get('/:code', async (req, res) => {
     if (url) {
       if(url.secret) {
         if(!req.session.user) {
-          res.redirect('/discord/login');
+          const config = require('../config')
+          res.render('openPopup', {
+            client_id: config.clientId,
+            redirect: encodeURIComponent(config.callback)
+          })
         } else {
           if(req.session.user.id === url.userId) {
             res.redirect(301, url.longUrl)

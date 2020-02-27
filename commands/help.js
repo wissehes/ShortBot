@@ -5,7 +5,8 @@ exports.run = (client, message, args) => {
     .setColor("BLUE")
     .setDescription(`
 **sh!<url>**: Shorten provided URL.
-**sh!custom <name> <url>**: Shorten provided URL with custom name.    
+**sh!custom <name> <url>**: Shorten provided URL with custom name.
+**sh!secret <url>**: Creates a private short URL (requires login)  
 `)
 
     message.channel.send(embed)

@@ -20,7 +20,7 @@ router.get('/callback', (req, res) => {
     if (req.session.user) return res.redirect('/');
     
     const accessCode = req.query.code;
-    if (!accessCode) throw new Error('No access code returned frm Discord');
+    if (!accessCode) throw new Error('No access code returned from Discord');
 
     const data = new FormData()
     data.append('client_id', CLIENT_ID);
