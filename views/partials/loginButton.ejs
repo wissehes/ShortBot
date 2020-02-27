@@ -1,0 +1,14 @@
+<script>
+    window.onload = () => {
+        document.getElementById("login").onclick = () => {
+            window.open('https://discordapp.com/api/oauth2/authorize?client_id=<%- client_id %>&scope=identify&response_type=code&redirect_uri=<%- redirect %>', 'Login', 'width=500,height=700,scrollbars=no')
+        };
+    }
+</script>
+
+<div class="center">
+    <div class="container login" id="login">
+        <img src="/static/discord.png"></img>
+        <p>Login with Discord</p>
+    </div>
+</div>

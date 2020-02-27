@@ -1,0 +1,43 @@
+body {
+    background-color: lightgray;
+    font-family: 'Helvetica', 'Arial', sans-serif;
+}
+.center {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #7289DA;
+    border-radius: 5px;
+}
+.container a, h2, img, p {
+    padding: 0 20px;
+    line-height: 35px;
+    color: #fff;
+    font-size: 20px;
+    display: block;
+    text-decoration: none;
+}
+.login {
+    cursor: pointer;
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-property: transform;
+    transition-property: transform;
+  }
+.login:hover, .login:focus, .login:active {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+}
+
+img  {
+    height: 100px;
+    width: 100px;
+}
