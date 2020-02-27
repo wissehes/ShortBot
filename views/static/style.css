@@ -41,3 +41,26 @@ img  {
     height: 100px;
     width: 100px;
 }
+.navbar {
+    background: #23272A;
+    padding: 21px 42px;
+    height: 20px;
+}
+
+.navbar a {
+    transition: .25s ease;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.navbar a:hover {
+    color: #7792f3;
+}
+
+.navbar a:not(:last-child) {
+    margin-right: 12px;
+}
+
+.navbar .right {
+    float: right;
+}

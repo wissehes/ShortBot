@@ -16,6 +16,11 @@ router.get('/login', (req, res) => {
     res.redirect(`https://discordapp.com/api/oauth2/authorize?client_id=${CLIENT_ID}&scope=identify&response_type=code&redirect_uri=${redirect}`);
 });
 
+router.get('/logout', (req, res) => {
+    req.session.destroy()
+    res.redirect('/')
+})
+
 router.get('/callback', (req, res) => {
     if (req.session.user) return res.redirect('/');
     

@@ -15,7 +15,8 @@
   <link rel="stylesheet" href="/static/style.css" />
 </head>
 
-<body>  
+<body>
+  <%- include('partials/navbar.ejs') %>
   <% if(user == null) { %>
     <%- include('partials/loginButton.ejs') %>
   <% } else { %>
