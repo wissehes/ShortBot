@@ -53,7 +53,7 @@ router.get('/callback', (req, res) => {
             userResponse.avatarURL = userResponse.avatar ? `https://cdn.discordapp.com/avatars/${userResponse.id}/${userResponse.avatar}.png?size=1024` : null;
 
             req.session.user = userResponse;
-            res.redirect('/');
+            res.render('loggedin')
         });
     });
 });
