@@ -15,7 +15,7 @@ connectDB();
 
 client.on("ready", () => {
   console.log("Bot Ready!")
-  client.user.setActivity("url's", { type: 'WATCHING' })
+  client.user.setActivity("sh!help | shbo.xyz", { type: 'PLAYING' })
 })
 
 fs.readdir("./events/", (err, files) => {
@@ -51,7 +51,7 @@ app.set('view engine', 'ejs');
 app.use('/s/', require('./routes/redirect'));
 app.use('/', require('./routes/index'))
 app.use('/discord', require('./routes/discord'));
-
+app.use('/static', express.static('views/static'))
 
 app.listen(config.port, () => {
   console.log("App running!")
