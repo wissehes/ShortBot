@@ -1,0 +1,14 @@
+{{> navbar }}
+
+{{#if user}}
+        <div class="center">
+            <div class="homeContainer container">
+                <h4>
+                    You're logged in as
+                    {{ user.tag }}
+                </h4>
+            </div>
+        </div>
+    {{else}}
+        {{> loginButton }}
+{{/if}}

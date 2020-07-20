@@ -1,0 +1,15 @@
+  <nav>
+    <div class="nav-wrapper teal lighten-2">
+      <ul id="nav-mobile" class="right">
+        {{#if user}}
+        <li class="waves-effect waves-light"><a href="/">{{ user.tag }}</a></li>
+        <li class="waves-effect waves-light"><a href="/about">About</a></li>
+        <li class="waves-effect waves-light"><a href="/mylinks">My links</a></li>
+        <li class="waves-effect waves-light"><a href="/discord/logout">Logout</a></li>
+        {{else}}
+        <li class="waves-effect waves-light"><a href="/">Home</a></li>
+        <li class="waves-effect waves-light"><a href="/about">About</a></li>
+        {{/if}}
+      </ul>
+    </div>
+  </nav>

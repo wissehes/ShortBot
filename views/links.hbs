@@ -1,0 +1,43 @@
+{{> navbar}}
+
+<div class="linksContainer">
+  <h3 class="black-text centered-text">My links</h3>
+  <div class="row">
+  <form method="POST" action="/api" class="form" id="linkForm">
+    <div class="input-field col s6">
+      <input id="longUrl" name="longUrl" type="url" required class="validate">
+      <label for="longUrl">Enter URL</label>
+    </div>
+    <div class="input-field col s3">
+      <input id="urlCode" name="urlCode" type="text" class="validate">
+      <label for="urlCode">Custom short URL (optional)</label>
+    </div>
+          <button type="submit" class="waves-effect waves-light indigo darken-1 btn">Shorten!</button>
+  </form>
+  </div>
+  {{#if links.length}}
+  <table class="highlight">
+    <thead>
+      <tr>
+        <th>Short URL</th>
+        <th>Original URL</th>
+        <th>Clicks</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each links}}
+      <tr>
+        <td><a href={{ this.shortUrl }} target="_blank">{{this.title}}</a></td>
+        <td>{{ this.longUrl }}</td>
+        <td>{{this.clickCount}}</td>
+        <td><a onclick="deleteLink('{{ this.urlCode }}')" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">delete</i></a></td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+  {{else}}
+  <p class="black-text">You don't have any shortened URL's yet!</p>
+  {{/if}}
+</div>
+<script defer src="/static/links.js"></script>
