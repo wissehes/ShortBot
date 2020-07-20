@@ -1,10 +1,11 @@
 const validUrl = require('valid-url');
 const shortid = require('shortid');
+const getWebsiteMetadata = require("../modules/getWebsiteMetadata")
 
 const Url = require('../models/Url');
 
 module.exports = (user, longUrl, secret = false) => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         const { baseUrl } = require('../config')
         const urlCode = shortid.generate();
 
@@ -18,10 +19,14 @@ module.exports = (user, longUrl, secret = false) => {
                 } else {
                     const shortUrl = baseUrl + '/' + urlCode;
                     const userId = user.id
+                    var title = await getWebsiteMetadata(longUrl)
+                    if (!title)
+                        title = urlCode
 
                     url = new Url({
                         userId,
                         longUrl,
+                        title,
                         shortUrl,
                         urlCode,
                         date: new Date(),
