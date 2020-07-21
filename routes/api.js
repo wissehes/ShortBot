@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const bodyParser = require("body-parser")
+const config = require("../config")
 
 router.use(bodyParser.urlencoded({
     extended: true
@@ -63,6 +64,23 @@ router.delete('/:code', async(req, res) => {
                 error: "No URL found with that code!"
             })
         }
+    }
+})
+
+// @route     DELETE /authorized
+// @desc      Check if authorized
+
+router.get("/authorized", (req, res) => {
+    if (req.session.user) {
+        return res.json({
+            authorized: true,
+            user: req.session.user
+        })
+    } else {
+        return res.json({
+            authorized: false,
+            authorize_url: `${config.baseUrl.replace("/s", "")}/discord/login`
+        })
     }
 })
 
