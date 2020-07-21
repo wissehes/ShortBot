@@ -28,8 +28,11 @@
     <tbody>
       {{#each links}}
       <tr>
-        <td><a href={{ this.shortUrl }} target="_blank">{{this.title}}</a></td>
-        <td>{{ this.longUrl }}</td>
+        <td><a href={{ this.shortUrl }} target="_blank">{{this.urlCode}}</a></td>
+        <td><div>
+          <h6 class="black-text"><a href="{{ this.longUrl }}">{{this.title }}</a></h6>
+          <span class="black-text">{{ this.longUrl }}</span>
+        </div></td>
         <td>{{this.clickCount}}</td>
         <td><a onclick="deleteLink('{{ this.urlCode }}')" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">delete</i></a></td>
       </tr>
