@@ -9,7 +9,6 @@ module.exports = (req, res, next) => {
         }) // if there isn't any token
 
     jwt.verify(token, config.sessionSecret, (err, user) => {
-        console.log(err)
         if (err || (user.message && user.message.toLowerCase().includes("unauthorized"))) {
             return res.status(403).json({
                 error: "Invalid token."
