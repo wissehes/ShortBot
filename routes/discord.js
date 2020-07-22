@@ -8,8 +8,6 @@ const router = express.Router();
 
 const config = require('../config');
 
-const jwt = require('jsonwebtoken');
-
 const CLIENT_ID = config.clientId;
 const CLIENT_SECRET = config.clientSecret;
 const redirect = encodeURIComponent(config.callback);
@@ -31,7 +29,7 @@ const authorize = (req, res) => {
     data.append('client_id', CLIENT_ID);
     data.append('client_secret', CLIENT_SECRET);
     data.append('grant_type', 'authorization_code');
-    data.append('redirect_uri', decodeURIComponent(req.query.callback) || config.callback);
+    data.append('redirect_uri', config.callback)
     data.append('scope', 'identify');
     data.append('code', accessCode);
 
@@ -53,11 +51,7 @@ const authorize = (req, res) => {
                     userResponse.avatarURL = userResponse.avatar ? `https://cdn.discordapp.com/avatars/${userResponse.id}/${userResponse.avatar}.png?size=1024` : null;
 
                     req.session.user = userResponse;
-                    const accessToken = jwt.sign(userResponse, config.sessionSecret, { expiresIn: '1d' });
-                    res.json({
-                        accessToken,
-                        userResponse
-                    })
+                    res.render('loggedin')
                 });
         });
 }
@@ -68,13 +62,6 @@ router.get('/callback', authorize)
 
 router.post("/getUser", (req, res) => {
     const token = req.headers.authorization;
-    jwt.verify(token, config.sessionSecret, (err, user) => {
-        if (err) {
-            return res.send("error!")
-        } else {
-            res.json(user)
-        }
-    });
 })
 
 module.exports = router;

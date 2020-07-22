@@ -8,8 +8,6 @@ router.use(bodyParser.urlencoded({
 }));
 router.use(bodyParser.json())
 
-const jwt = require('jsonwebtoken');
-
 const Url = require('../models/Url');
 
 const saveLink = require("../modules/savelink")
@@ -83,24 +81,17 @@ router.get("/links", authenticateToken, async(req, res) => {
 
 router.get("/authorized", (req, res) => {
     //const authorize_url = `${config.baseUrl.substring(0, config.baseUrl.length - 2)}/discord/login`
-    if (req.headers.authorization) {
-        jwt.verify(req.headers.authorization.split(' ')[1], config.sessionSecret, (err, user) => {
-            if (err || user.includes("Unauthorized")) {
-                return res.json({
-                    authorized: false,
-                })
-            } else {
-                return res.json({
-                    authorized: true,
-                    user
-                })
-            }
-        });
+    if (req.session.user && !req.session.user.username.toLowerCase().includes("unauthorized")) {
+        return res.json({
+            authorized: true,
+            user: req.session.user
+        })
     } else {
         return res.json({
-            authorized: false,
+            authorized: false
         })
     }
+
 })
 
 module.exports = router;
