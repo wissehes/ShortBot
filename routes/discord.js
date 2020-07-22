@@ -8,6 +8,8 @@ const router = express.Router();
 
 const config = require('../config');
 
+const jwt = require('jsonwebtoken');
+
 const CLIENT_ID = config.clientId;
 const CLIENT_SECRET = config.clientSecret;
 const redirect = encodeURIComponent(config.callback);
@@ -21,9 +23,7 @@ router.get('/logout', (req, res) => {
     res.redirect('/')
 })
 
-router.get('/callback', (req, res) => {
-    if (req.session.user) return res.redirect('/');
-    
+const authorize = (req, res) => {
     const accessCode = req.query.code;
     if (!accessCode) throw new Error('No access code returned from Discord');
 
@@ -31,32 +31,50 @@ router.get('/callback', (req, res) => {
     data.append('client_id', CLIENT_ID);
     data.append('client_secret', CLIENT_SECRET);
     data.append('grant_type', 'authorization_code');
-    data.append('redirect_uri', config.callback);
+    data.append('redirect_uri', decodeURIComponent(req.query.callback) || config.callback);
     data.append('scope', 'identify');
     data.append('code', accessCode);
 
     fetch('https://discordapp.com/api/oauth2/token', {
-        method: 'POST',
-        body: data
-    })
-    .then(res => res.json())
-    .then(response => {
-        fetch('https://discordapp.com/api/users/@me', {
-            method: 'GET',
-            headers: {
-                authorization: `${response.token_type} ${response.access_token}`
-            },
+            method: 'POST',
+            body: data
         })
-        .then(res2 => res2.json())
-        .then(userResponse => {
-            userResponse.tag = `${userResponse.username}#${userResponse.discriminator}`;
-            userResponse.avatarURL = userResponse.avatar ? `https://cdn.discordapp.com/avatars/${userResponse.id}/${userResponse.avatar}.png?size=1024` : null;
+        .then(res => res.json())
+        .then(response => {
+            fetch('https://discordapp.com/api/users/@me', {
+                    method: 'GET',
+                    headers: {
+                        authorization: `${response.token_type} ${response.access_token}`
+                    },
+                })
+                .then(res2 => res2.json())
+                .then(userResponse => {
+                    userResponse.tag = `${userResponse.username}#${userResponse.discriminator}`;
+                    userResponse.avatarURL = userResponse.avatar ? `https://cdn.discordapp.com/avatars/${userResponse.id}/${userResponse.avatar}.png?size=1024` : null;
 
-            req.session.user = userResponse;
-            res.render('loggedin')
+                    req.session.user = userResponse;
+                    const accessToken = jwt.sign(userResponse, config.sessionSecret, { expiresIn: '1d' });
+                    res.json({
+                        accessToken,
+                        userResponse
+                    })
+                });
         });
-    });
-});
+}
 
+router.get('/authorize', authorize);
+router.get('/callback', authorize)
+
+
+router.post("/getUser", (req, res) => {
+    const token = req.headers.authorization;
+    jwt.verify(token, config.sessionSecret, (err, user) => {
+        if (err) {
+            return res.send("error!")
+        } else {
+            res.json(user)
+        }
+    });
+})
 
 module.exports = router;

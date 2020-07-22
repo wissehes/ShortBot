@@ -8,40 +8,38 @@ router.use(bodyParser.urlencoded({
 }));
 router.use(bodyParser.json())
 
+const jwt = require('jsonwebtoken');
+
 const Url = require('../models/Url');
 
 const saveLink = require("../modules/savelink")
 const saveCustomLink = require("../modules/savecustomlink")
 
-router.post("/create", async(req, res) => {
-    if (req.session.user) {
-        if (req.body.urlCode) {
-            if (req.body.urlCode.length > 15) {
-                return res.status(400).json({
-                    error: "Custom ID can't be longer than 15 characters"
-                })
-            } else if (req.body.urlCode.length < 5) {
-                return res.status(400).json({
-                    error: "Custom ID can't be shorter than 5 characters"
-                })
-            } else {
-                const customLink = await saveCustomLink(req.session.user, req.body.longUrl, req.body.urlCode)
-                return res.json({
-                    success: true,
-                    url: customLink
-                })
-            }
+const authenticateToken = require("../modules/checkLoggedIn")
+
+router.post("/create", authenticateToken, async(req, res) => {
+    if (req.body.urlCode) {
+        if (req.body.urlCode.length > 15) {
+            return res.status(400).json({
+                error: "Custom ID can't be longer than 15 characters"
+            })
+        } else if (req.body.urlCode.length < 5) {
+            return res.status(400).json({
+                error: "Custom ID can't be shorter than 5 characters"
+            })
+        } else {
+            const customLink = await saveCustomLink(req.session.user, req.body.longUrl, req.body.urlCode)
+            return res.json({
+                success: true,
+                url: customLink
+            })
         }
-        const savedLink = await saveLink(req.session.user, req.body.longUrl)
-        res.json({
-            success: true,
-            url: savedLink
-        })
-    } else {
-        res.status(400).json({
-            error: "You're not logged in!"
-        })
     }
+    const savedLink = await saveLink(req.session.user, req.body.longUrl)
+    res.json({
+        success: true,
+        url: savedLink
+    })
 })
 
 // @route     DELETE /:code
@@ -67,19 +65,40 @@ router.delete('/:code', async(req, res) => {
     }
 })
 
-// @route     DELETE /authorized
+// @route     GET /links
+// @desc      Get all links of user
+
+router.get("/links", authenticateToken, async(req, res) => {
+    const user = req.user;
+    let links = await Url.find({ userId: user.id }).lean()
+    for (l in links) {
+        delete links[l]["__v"];
+        delete links[l]["_id"]
+    }
+    res.json(links)
+})
+
+// @route     GET /authorized
 // @desc      Check if authorized
 
 router.get("/authorized", (req, res) => {
-    if (req.session.user) {
-        return res.json({
-            authorized: true,
-            user: req.session.user
-        })
+    //const authorize_url = `${config.baseUrl.substring(0, config.baseUrl.length - 2)}/discord/login`
+    if (req.headers.authorization) {
+        jwt.verify(req.headers.authorization.split(' ')[1], config.sessionSecret, (err, user) => {
+            if (err) {
+                return res.json({
+                    authorized: false,
+                })
+            } else {
+                return res.json({
+                    authorized: true,
+                    user
+                })
+            }
+        });
     } else {
         return res.json({
             authorized: false,
-            authorize_url: `${config.baseUrl.replace("/s", "")}/discord/login`
         })
     }
 })
