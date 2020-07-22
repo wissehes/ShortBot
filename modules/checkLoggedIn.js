@@ -9,7 +9,7 @@ module.exports = (req, res, next) => {
         }) // if there isn't any token
 
     jwt.verify(token, config.sessionSecret, (err, user) => {
-        if (err || (user.message && user.message.toLowerCase().includes("unauthorized"))) {
+        if (err || (user.message && user.message.toLowerCase().inludes("unauthorized"))) {
             return res.status(403).json({
                 error: "Invalid token."
             })
