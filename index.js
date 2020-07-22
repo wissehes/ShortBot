@@ -62,13 +62,14 @@ app.use(session({
 app.engine('hbs', exphbs());
 app.set('view engine', 'hbs');
 
-if (config.dev) {
-    app.use(cors());
-} else {
-    app.use(cors({
-        origin: 'https://shbo.xyz'
-    }));
-}
+// if (config.dev) {
+//     app.use(cors());
+// } else {
+//     app.use(cors({
+//         origin: 'https://shbo.xyz'
+//     }));
+// }
+app.use(cors());
 
 app.use('/s/', require('./routes/redirect'));
 app.use('/api/', require("./routes/api"))
