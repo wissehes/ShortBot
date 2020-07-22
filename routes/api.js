@@ -85,7 +85,7 @@ router.get("/authorized", (req, res) => {
     //const authorize_url = `${config.baseUrl.substring(0, config.baseUrl.length - 2)}/discord/login`
     if (req.headers.authorization) {
         jwt.verify(req.headers.authorization.split(' ')[1], config.sessionSecret, (err, user) => {
-            if (err || user.message.toLowerCase().inludes("unauthorized")) {
+            if (err || user.username.toLowerCase().inludes("unauthorized")) {
                 return res.json({
                     authorized: false,
                 })
