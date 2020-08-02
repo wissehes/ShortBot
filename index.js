@@ -9,14 +9,15 @@ const session = require('express-session');
 //Config and express init
 const config = require("./config")
 
-// Set NODE_ENV to Production if necessary
+const app = express()
+
+// Set NODE_ENV to Production if necessary and trust proxy
 if (!config.dev) {
     process.env.NODE_ENV = "production"
+    app.set("trust proxy", true)
 }
 
-const app = express()
-const cors = require("cors")
-    //Load the connectDB Function
+//Load the connectDB Function
 const connectDB = require('./modules/db');
 
 client.config = config;
@@ -62,8 +63,12 @@ app.use(session({
     resave: false,
     saveUninitialized: true,
     expires: 604800000,
-    //cookie: { secure: true },
+    cookie: { secure: true },
+    name: 'ShBoSessionID'
 }));
+
+// Disable x-powered-by header
+app.disable('x-powered-by')
 
 app.engine('hbs', exphbs());
 app.set('view engine', 'hbs');
