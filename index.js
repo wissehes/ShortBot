@@ -8,6 +8,12 @@ const exphbs = require('express-handlebars');
 const session = require('express-session');
 //Config and express init
 const config = require("./config")
+
+// Set NODE_ENV to Production if necessary
+if (!config.dev) {
+    process.env.NODE_ENV = "production"
+}
+
 const app = express()
 const cors = require("cors")
     //Load the connectDB Function
@@ -61,15 +67,6 @@ app.use(session({
 
 app.engine('hbs', exphbs());
 app.set('view engine', 'hbs');
-
-// if (config.dev) {
-//     app.use(cors());
-// } else {
-//     app.use(cors({
-//         origin: 'https://shbo.xyz'
-//     }));
-// }
-app.use(cors());
 
 app.use('/s/', require('./routes/redirect'));
 app.use('/api/', require("./routes/api"))
