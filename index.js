@@ -63,7 +63,7 @@ app.use(session({
     resave: false,
     saveUninitialized: true,
     expires: 604800000,
-    cookie: { secure: true },
+    //cookie: { secure: true },
     name: 'ShBoSessionID'
 }));
 
